@@ -11,6 +11,7 @@ const root: ReactDOM.Root = ReactDOM.createRoot(
 
 function Demo() {
     const [screenLoading, setScreenLoading] = React.useState<boolean>(false);
+    const [numberDeviceOpen, setNumberDeviceOpen] = React.useState<boolean>(false);
     const [modalOpen, setModalOpen] = React.useState<boolean>(false);
     const [drawerPosition, setDrawerPosition] = React.useState<"left" | "right" | "top" | "bottom">("left");
     const [drawerOpen, setDrawerOpen] = React.useState<boolean>(false);
@@ -46,7 +47,7 @@ function Demo() {
 
     return (
         <div style={{padding: 5}}>
-            <Modal open={true} style={{margin: "auto"}}>
+            <Modal open={numberDeviceOpen} style={{margin: "auto"}} toggle={() => setNumberDeviceOpen(false)}>
                 <Modal.Body>
                     <NumberDevice size={"xxl"} currency={"RM"}/>
                 </Modal.Body>
@@ -79,6 +80,11 @@ function Demo() {
                         <div style={{display: "inline-flex", alignItems: "center", border: "1px solid lightgrey", borderRadius: ".25rem", padding: 5, margin: 5}}>
                             <div style={{padding: "0 5px"}}>modal</div>
                             <Input.Switch checked={modalOpen} onChange={setModalOpen}/>
+                        </div>
+
+                        <div style={{display: "inline-flex", alignItems: "center", border: "1px solid lightgrey", borderRadius: ".25rem", padding: 5, margin: 5}}>
+                            <div style={{padding: "0 5px"}}>number device</div>
+                            <Input.Switch checked={numberDeviceOpen} onChange={setNumberDeviceOpen}/>
                         </div>
 
                         <div style={{display: "inline-flex", alignItems: "center", border: "1px solid lightgrey", borderRadius: ".25rem", padding: 5, margin: 5}}>
