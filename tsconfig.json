@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES2022",
+    "sourceMap": false,
+    "esModuleInterop": true,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "lib": [
+      "es2015",
+      "dom"
+    ],
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "static/**/*.ts",
+    "static/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

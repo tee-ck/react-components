@@ -1,0 +1,66 @@
+@use "sass:math";
+
+
+$bp-xs: 576px;
+$bp-sm: 768px;
+$bp-md: 992px;
+$bp-lg: 1200px;
+$bp-xl: 1400px;
+$bp-xxl: 1600px;
+
+$flex-count: 12;
+
+@media only screen and (max-width: $bp-xs) {
+  @for $i from 1 through $flex-count {
+    .xs-#{$i} {
+      flex: 0 0 percentage(math.div($i, $flex-count)) !important;
+      -webkit-flex: 0 0 percentage(math.div($i, $flex-count)) !important;
+    }
+  }
+}
+
+@media only screen and (min-width: $bp-xs) {
+  @for $i from 1 through $flex-count {
+    .sm-#{$i} {
+      flex: 0 0 percentage(math.div($i, $flex-count)) !important;
+      -webkit-flex: 0 0 percentage(math.div($i, $flex-count)) !important;
+    }
+  }
+}
+
+@media only screen and (min-width: $bp-sm) {
+  @for $i from 1 through $flex-count {
+    .md-#{$i} {
+      flex: 0 0 percentage(math.div($i, $flex-count)) !important;
+      -webkit-flex: 0 0 percentage(math.div($i, $flex-count)) !important;
+    }
+  }
+}
+
+@media only screen and (min-width: $bp-md) {
+  @for $i from 1 through $flex-count {
+    .lg-#{$i} {
+      flex: 0 0 percentage(math.div($i, $flex-count)) !important;
+      -webkit-flex: 0 0 percentage(math.div($i, $flex-count)) !important;
+    }
+  }
+}
+
+@media only screen and (min-width: $bp-lg) {
+  @for $i from 1 through $flex-count {
+    .xl-#{$i} {
+      flex: 0 0 percentage(math.div($i, $flex-count)) !important;
+      -webkit-flex: 0 0 percentage(math.div($i, $flex-count)) !important;
+    }
+  }
+}
+
+@media only screen and (min-width: $bp-xl) {
+  @for $i from 1 through $flex-count {
+    .xxl-#{$i} {
+      flex: 0 0 percentage(math.div($i, $flex-count)) !important;
+      -webkit-flex: 0 0 percentage(math.div($i, $flex-count)) !important;
+    }
+  }
+}
+

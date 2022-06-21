@@ -1,0 +1,50 @@
+@use "sass:math";
+
+@import "../styles/variables";
+
+$key-grid-size: 5rem;
+$key-grid-sizes: ("xs": 3.0rem, "sm": 3.25rem, "md": 3.5rem, "lg": 3.75rem, "xl": 4.0rem, "xxl": 4.25rem);
+
+.number-device {
+  .keypad {
+    display: grid;
+    grid-gap: .35rem;
+    justify-content: center;
+
+    button {
+      background-color: $gray-2;
+      color: $gray-9;
+      border: 1px solid $gray-6;
+      border-radius: .25rem;
+      cursor: pointer;
+      transition: all 300ms ease-in-out;
+
+      &:hover {
+        background-color: $gray-1;
+      }
+
+      &:focus, &:active {
+        background-color: $gray-1;
+        outline: none;
+        border-color: $primary-color;
+      }
+    }
+  }
+
+  @each $size, $value in $key-grid-sizes {
+    .input-number {
+      font-size: math.div($value, 4);
+    }
+
+    &[data-size=#{$size}] {
+      .keypad {
+        grid-template-columns: $value $value $value;
+        grid-template-rows: $value $value $value $value;
+
+        button {
+          font-size: math.div($value, 4);
+        }
+      }
+    }
+  }
+}

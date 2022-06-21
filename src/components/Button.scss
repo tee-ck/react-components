@@ -1,0 +1,62 @@
+@import "../styles/variables";
+
+div[role=button].button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: .5rem 1rem;
+    border-radius: .25rem;
+    font-size: 1rem;
+    background: white;
+    border: 1px solid lightgrey;
+    cursor: pointer;
+    transition: all 500ms ease-in-out;
+
+    &:hover:not([aria-disabled=true]) {
+        opacity: .8;
+    }
+
+    &:focus:not([aria-disabled=true]) {
+        outline: none;
+    }
+
+    color: white;
+    @each $color, $hex in $theme-colors {
+        &.#{$color}:not([aria-disabled=true]) {
+            background-color: $hex;
+            border-color: $hex;
+
+            &.outlined {
+                color: $hex;
+            }
+
+            &:focus {
+                border-color: $hex;
+                box-shadow: 0 0 0 .05rem $hex;
+            }
+        }
+    }
+
+    &.outlined:not([aria-disabled=true]) {
+        background-color: white;
+    }
+
+    &[aria-disabled=true] {
+        background-color: $gray-6;
+        cursor: not-allowed;
+        border: 1px solid $gray-6;
+    }
+}
+
+div.button-group {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    border-radius: .25rem;
+
+    .button {
+        flex: auto;
+        border-radius: 0;
+    }
+}

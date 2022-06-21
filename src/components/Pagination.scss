@@ -1,0 +1,66 @@
+@import "../styles/variables";
+
+.pagination-container {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  .pagination-item {
+    height: 1.5rem;
+    min-width: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: white;
+    outline: 1px solid lightgrey;
+    margin-top: 1px;
+    margin-left: 1px;
+    cursor: pointer;
+    transition: outline-color, background-color 300ms ease-in-out;
+    user-select: none;
+    -ms-user-select: none;
+
+    &.disabled {
+      background-color: lightgrey;
+      cursor: not-allowed;
+    }
+
+    &:nth-child(1), &:nth-child(2) {
+      padding: 0 .25rem;
+    }
+
+    &:nth-last-child(1), &:nth-last-child(2) {
+      padding: 0 .25rem;
+    }
+
+    &:nth-child(1) {
+      border-top-left-radius: .25rem;
+      border-bottom-left-radius: .25rem;
+    }
+
+    &:nth-last-child(1) {
+      border-top-right-radius: .25rem;
+      border-bottom-right-radius: .25rem;
+    }
+
+    &.selected {
+      background-color: $primary-color;
+      outline: 1px solid $primary-color;
+      color: white;
+    }
+
+    &:focus:not(.selected, .disabled) {
+      color: $primary-color;
+      outline: 1px solid $primary-color;
+      z-index: 1;
+    }
+
+    &:hover:not(.selected, .disabled) {
+      color: white;
+      background-color: $blue-5;
+      outline: 1px solid $blue-5;
+    }
+  }
+}

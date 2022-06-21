@@ -1,0 +1,19 @@
+html, body, #root {
+  display: flex;
+  flex-direction: column;
+  background: whitesmoke;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+}
+
+#root {
+  overflow-y: scroll;
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
