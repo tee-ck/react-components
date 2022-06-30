@@ -4,7 +4,7 @@ import esbuild from "esbuild";
 
 esbuild.build({
     entryPoints: [
-        "./src/index.ts",
+        "./static/index.tsx",
     ],
     target: "es2022",
     loader: {

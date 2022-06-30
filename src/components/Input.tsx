@@ -123,7 +123,7 @@ interface InputProps extends React.HTMLProps<HTMLInputElement> {
 }
 
 const Input: InputComponent = (props: InputProps) => {
-    const {className: _className, onChange, onKeyDown, onEnter, onValueChange, disabled, readOnly, ...rest} = props;
+    const {className: _className, onChange, onKeyDown, onEnter, onValueChange, value, disabled, readOnly, ...rest} = props;
     const className = ["input", _className].filter(Boolean).join(" ");
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -138,7 +138,7 @@ const Input: InputComponent = (props: InputProps) => {
     };
 
     return (
-        <input className={className} aria-disabled={disabled} aria-readonly={readOnly} disabled={disabled} readOnly={readOnly} {...rest} onKeyDown={handleKeyDown} onChange={handleChange}/>
+        <input className={className} aria-disabled={disabled} aria-readonly={readOnly} disabled={disabled} readOnly={readOnly} value={value} {...rest} onKeyDown={handleKeyDown} onChange={handleChange}/>
     );
 };
 
