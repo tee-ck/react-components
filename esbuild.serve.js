@@ -1,26 +1,25 @@
-import {sassPlugin} from "esbuild-sass-plugin";
-import esbuild from "esbuild";
-
-esbuild.serve({servedir: "./static", host: "localhost", port: 4000}, {
-    entryPoints: [
-        "./static/index.tsx",
-    ],
-    target: "es2022",
-    loader: {
-        ".ts": "ts",
-        ".tsx": "tsx",
-    },
-    minify: true,
-    bundle: true,
-    sourcemap: false,
-    // outfile: "./static/index.js",
-    outdir: "./static",
-    platform: "browser",
-    plugins: [
-        sassPlugin(),
-    ],
-
-}).then(result => {
-    console.log(result);
-
-});
+// import servor from "servor";
+// import chokidar from "chokidar";
+// import {buildDemo} from "./esbuild.utils.js";
+//
+//
+// await buildDemo();
+//
+// chokidar.watch("./src", {ignored:/build|node_modules|\.idea|\.git/}).on("all", async () => {
+//     await buildDemo();
+// });
+//
+// chokidar.watch("./static", {ignored:/build|node_modules|\.idea|\.git/}).on("all", async () => {
+//     await buildDemo();
+// });
+//
+// await servor({
+//     root: "./demo",
+//     fallback: "index.html",
+//     module: false,
+//     static: false,
+//     reload: true,
+//     inject: "",
+//     credentials: null,
+//     port: process.env.PORT || 3000,
+// });

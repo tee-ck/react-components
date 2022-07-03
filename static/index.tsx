@@ -4,6 +4,7 @@ import {Button, ButtonVariant, Input, Loading, Modal, Card, Drawer, Pagination, 
 
 import "./index.scss";
 import Slider from "../src/components/Slider";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
 
 const root: ReactDOM.Root = ReactDOM.createRoot(
     document.getElementById("root") as HTMLElement
@@ -170,6 +171,10 @@ function Demo() {
 
 root.render(
     <React.StrictMode>
-        <Demo/>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/demo" element={<Demo/>}/>
+            </Routes>
+        </BrowserRouter>
     </React.StrictMode>
 );
