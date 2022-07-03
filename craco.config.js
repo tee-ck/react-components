@@ -33,8 +33,6 @@ module.exports = {
         },
     },
     devServer: (config) => {
-        console.log(config);
-
         return config;
     },
     plugins: [

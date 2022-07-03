@@ -425,8 +425,6 @@ Input.Number = React.memo(React.forwardRef((props: InputNumberProps, ref: React.
 
     }, []);
 
-    console.log(`render Input.Number`);
-
     return (
         <div ref={inputEl} role="textbox" tabIndex={0} className={className} aria-disabled={disabled} aria-readonly={readOnly} {...rest} onKeyDown={handleKeyDown} onWheel={handleWheel}>
             <span className="currency">{_currency}</span>
