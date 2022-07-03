@@ -2,15 +2,17 @@ import esbuild from "esbuild";
 import {sassPlugin} from "esbuild-sass-plugin";
 import fs from "fs-extra";
 
-export const buildDemo = async () => {
+export const generateDemo = async () => {
+    const start = Date.now();
+
     await fs.rm("./demo", {recursive: true, force: true});
     await fs.copy("./demo-src/index.html", "./demo/index.html", {overwrite: true});
 
-    return await esbuild.build({
+    await esbuild.build({
         entryPoints: [
             "./demo-src/index.tsx",
         ],
-        target: "es2022",
+        target: "es2020",
         loader: {
             ".ts": "ts",
             ".tsx": "tsx",
@@ -26,4 +28,6 @@ export const buildDemo = async () => {
             sassPlugin(),
         ],
     });
+
+    console.log(`Compiled demo in ${Date.now() - start}ms`);
 };

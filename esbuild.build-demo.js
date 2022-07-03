@@ -1,3 +1,3 @@
-import {buildDemo} from "./esbuild.utils.js";
+import {generateDemo} from "./esbuild.utils.js";
 
-buildDemo().then();
+generateDemo().then();

@@ -1,8 +1,8 @@
 import LiveServer from "live-server";
 import chokidar from "chokidar";
-import {buildDemo} from "./esbuild.utils.js";
+import {generateDemo} from "./esbuild.utils.js";
 
-await buildDemo();
+await generateDemo();
 
 LiveServer.start({
     host: "0.0.0.0",
@@ -14,9 +14,12 @@ LiveServer.start({
     logLevel: 2,
 });
 
-chokidar.watch(["./src", "./demo-src"], {ignored:/build|node_modules|\.idea|\.git/}).on("all", async () => {
-    await buildDemo();
+chokidar.watch(["./src", "./demo-src"], {ignored:/build|node_modules|\.idea|\.git/}).on("all", async (event, path) => {
+    switch (event) {
+        case "change": {
+            await generateDemo();
 
-    const {watcher} = LiveServer;
-    watcher.emit("change", "./demo/index.html");
+            break;
+        }
+    }
 });
