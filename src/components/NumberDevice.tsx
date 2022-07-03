@@ -2,24 +2,23 @@ import React from "react";
 
 import "./NumberDevice.scss";
 
-import Input, {BigFloat} from "./Input";
+import Input, {InputNumberRef} from "./Input";
 
-interface NumberDeviceProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
+interface NumberDeviceProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange" | "value"> {
     onChange?(value: string): void;
     size?: "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
-    value?: number | string;
+    value?: number | string | bigint;
     decimal?: number;
     currency?: string;
 }
 
-const NumberDevice: React.FC<NumberDeviceProps> = (props: NumberDeviceProps) => {
+const NumberDevice: React.FC<NumberDeviceProps> = React.memo((props: NumberDeviceProps) => {
     const {className: _className, onChange, size, value: _value, decimal: _decimal, currency, ...rest} = props;
-    const className = ["number-device", _className].filter(Boolean).join(" ");
 
-    const [value, setValue] = React.useState<BigFloat>(new BigFloat(_value, _decimal));
-    const [displayValue, setDisplayValue] = React.useState<string>(value.toString());
+    const className = React.useMemo(() => ["number-device", _className].filter(Boolean).join(" "), [_className]);
+    const inputEl = React.useRef<InputNumberRef>(null);
 
-    const handleKeyClick = (key: string) => {
+    const handleKeyClick = React.useCallback((key: string) => {
         switch (key) {
             case "0":
             case "1":
@@ -31,42 +30,26 @@ const NumberDevice: React.FC<NumberDeviceProps> = (props: NumberDeviceProps) => 
             case "7":
             case "8":
             case "9":
-                setDisplayValue(value.append(key).toString());
+                inputEl.current?.command("push", key);
                 break;
             case "00":
-                setDisplayValue(value.append("0").append("0").toString());
+                inputEl.current?.command("push", "0");
+                inputEl.current?.command("push", "0");
                 break;
             case "AC":
-                setDisplayValue(value.clean().toString());
+                inputEl.current?.command("clear");
                 break;
         }
-    };
+    }, []) as (key: string) => void;
 
-    const handleChange = (value: string) => {
-        setValue(new BigFloat(value, _decimal));
-    };
+    const handleChange = React.useCallback((value: string) => {
+        onChange && onChange(value);
 
-    React.useEffect(() => {
-        onChange && onChange(displayValue);
-
-    }, [displayValue]);
-
-    React.useEffect(() => {
-        setDisplayValue(value.toString());
-
-    }, [value]);
-
-    React.useEffect(() => {
-        const __value = new BigFloat(_value, _decimal);
-        if (!value.isEqual(__value)) {
-            setValue(__value);
-        }
-
-    }, [_value]);
+    }, []) as (value: string) => void;
 
     return (
         <div className={className} data-size={size} {...rest}>
-            <Input.Number value={displayValue} decimal={_decimal} currency={currency} onChange={handleChange} />
+            <Input.Number ref={inputEl} value={_value} decimal={_decimal} currency={currency} onChange={handleChange} />
 
             <div className={"keypad"} style={{marginTop: 5}}>
                 {[["1", "2", "3"], ["4", "5", "6"], ["7", "8", "9"], ["AC", "0", "00"]].map((row: string[]) => (
@@ -81,7 +64,7 @@ const NumberDevice: React.FC<NumberDeviceProps> = (props: NumberDeviceProps) => 
             </div>
         </div>
     );
-};
+});
 NumberDevice.defaultProps = {
     size: "sm",
     value: 0,

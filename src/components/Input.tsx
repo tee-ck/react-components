@@ -4,117 +4,21 @@ import {MdCheck} from "react-icons/md";
 
 import "./Input.scss";
 
-export class BigFloat {
-    private value: bigint;
-    private readonly decimal: number;
-
-    constructor(num: number | string | bigint | BigFloat, decimal: number = 0) {
-        if (num instanceof BigFloat) {
-            this.value = num.value;
-            this.decimal = num.decimal;
-
-            return;
-        }
-
-        if (!(typeof num === "bigint" || typeof num === "number" || typeof num === "string")) {
-            throw new Error("Numeric constructor argument must be a number, string, bigint or BigFloat");
-        }
-
-        this.decimal = decimal;
-        if (this.decimal > 0) {
-            switch (typeof num) {
-                case "number":
-                    this.value = (BigInt(num) * BigInt(10 ** this.decimal)) + BigInt(num % 1 * 10 ** this.decimal);
-                    break;
-                case "string":
-                    this.value = (BigInt(num.slice(0, num.length - this.decimal - 1)) * BigInt(10 ** this.decimal)) + (BigInt(num.slice(num.indexOf(".") + 1)) % BigInt(10 ** this.decimal));
-                    break;
-                case "bigint":
-                    this.value = num;
-                    break;
-            }
-        } else {
-            this.value = BigInt(num);
-        }
-    }
-
-    public increase(): BigFloat {
-        this.value++;
-
-        return this;
-    }
-
-    public decrease(): BigFloat {
-        this.value--;
-
-        return this;
-    }
-
-    public append(num: "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"): BigFloat {
-        if (this.value === 0n) {
-            this.value = BigInt(num);
-
-        } else {
-            this.value *= BigInt(10)
-            this.value += BigInt(num);
-        }
-
-        return this;
-    }
-
-    public removeLast(): BigFloat {
-        if (this.value === 0n) {
-            return this;
-        }
-
-        this.value /= BigInt(10);
-        return this;
-    }
-
-    public negate(): BigFloat {
-        this.value = -this.value;
-
-        return this;
-    }
-
-    public clean(): BigFloat {
-        this.value = 0n;
-
-        return this;
-    }
-
-    public isEqual(num: BigFloat): boolean {
-        return this.value === num.value && this.decimal === num.decimal;
-    }
-
-    public toString(): string {
-        const absolute = (this.value < 0 ? -this.value : this.value).toString();
-
-        if (this.decimal > 0) {
-            if (absolute.length <= this.decimal) {
-                return `${this.value < 0 ? "-" : ""}0.${absolute.padStart(this.decimal, "0")}`;
-
-            } else {
-                return `${this.value < 0 ? "-" : ""}${absolute.slice(0, absolute.length - this.decimal)}.${absolute.slice(absolute.length - this.decimal)}`;
-            }
-        }
-
-        return absolute;
-    }
-}
-
 interface InputComponent extends React.FC<InputProps> {
     Textarea: React.FC<InputTextareaProps>;
     Switch: React.FC<InputSwitchProps>;
     CheckBox: React.FC<InputCheckBoxProps>;
     Search: React.FC<InputSearchProps>;
-    Number: React.FC<InputNumberProps>;
+    Number: React.ForwardRefExoticComponent<React.PropsWithoutRef<InputNumberProps> & React.RefAttributes<InputNumberRef>>;
 }
 
 interface InputProps extends React.HTMLProps<HTMLInputElement> {
     onValueChange?(value: string): void;
+
     onKeyDown?(event: React.KeyboardEvent<HTMLInputElement>): void;
+
     onEnter?(event: React.KeyboardEvent<HTMLInputElement>): void;
+
     value?: string;
     disabled?: boolean;
     readOnly?: boolean;
@@ -138,13 +42,16 @@ const Input: InputComponent = (props: InputProps) => {
     };
 
     return (
-        <input className={className} aria-disabled={disabled} aria-readonly={readOnly} disabled={disabled} readOnly={readOnly} value={value} {...rest} onKeyDown={handleKeyDown} onChange={handleChange}/>
+        <input className={className} aria-disabled={disabled} aria-readonly={readOnly} disabled={disabled} readOnly={readOnly} value={value} {...rest} onKeyDown={handleKeyDown}
+               onChange={handleChange}/>
     );
 };
 
 interface InputTextareaProps extends React.HTMLProps<HTMLTextAreaElement> {
     onChange?(event: React.ChangeEvent<HTMLTextAreaElement>): void;
+
     onValueChange?(value: string): void;
+
     value?: string;
     disabled?: boolean;
     readOnly?: boolean;
@@ -172,7 +79,9 @@ Input.Textarea.defaultProps = {
 
 interface InputSwitchProps extends Omit<React.HTMLProps<HTMLDivElement>, "onChange"> {
     onChange?(checked: boolean): void;
+
     onClick?(event: React.MouseEvent<HTMLDivElement>): void;
+
     checked?: boolean;
     disabled?: boolean;
     readOnly?: boolean;
@@ -221,10 +130,12 @@ Input.Switch.defaultProps = {
 
 interface InputCheckBoxProps extends Omit<React.HTMLProps<HTMLDivElement>, "onChange"> {
     onChange?(checked: boolean): void;
+
     checked?: boolean;
     disabled?: boolean;
     readOnly?: boolean;
 }
+
 Input.CheckBox = (props: InputCheckBoxProps) => {
     const {className: _className, onChange, checked: _checked, disabled, readOnly, ...rest} = props;
     const className = ["checkbox-container", _className].filter(Boolean).join(" ");
@@ -263,9 +174,13 @@ Input.CheckBox.defaultProps = {
 
 interface InputSearchProps extends Omit<React.HTMLProps<HTMLDivElement>, "onChange"> {
     onFocus?(event: React.FocusEvent<HTMLDivElement>): void;
+
     onBlur?(event: React.FocusEvent<HTMLDivElement>): void;
+
     onBeforeInput?(event: React.CompositionEvent<HTMLDivElement>): void;
+
     onChange?(value: string): void;
+
     value?: string;
     readOnly?: boolean;
     disabled?: boolean;
@@ -334,7 +249,8 @@ Input.Search = (props: InputSearchProps) => {
     return (
         <div role={"searchbox"} className={`${className}${focus ? " focused" : ""}`} tabIndex={0} aria-disabled={disabled} aria-readonly={readOnly} {...rest} onFocus={handleFocus} onBlur={handleBlur}>
             {value === "" && placeholder && <span className="placeholder" tabIndex={0} onFocus={handleFocus} onBlur={handleBlur}>{placeholder}</span>}
-            <div ref={searchEl} role={"search"} tabIndex={0} contentEditable={!readOnly && !disabled} onFocus={handleFocus} onBlur={handleBlur} onBeforeInput={handleBeforeInput} onInput={handleInput}/>
+            <div ref={searchEl} role={"search"} tabIndex={0} contentEditable={!readOnly && !disabled} onFocus={handleFocus} onBlur={handleBlur} onBeforeInput={handleBeforeInput}
+                 onInput={handleInput}/>
             {value !== "" && <CgClose style={{cursor: "pointer"}} onClick={handleClear}/>}
         </div>
     );
@@ -345,30 +261,76 @@ Input.Search.defaultProps = {
     value: "",
 };
 
-interface InputNumberProps extends Omit<React.HTMLProps<HTMLDivElement>, "onChange"> {
+type InputNumberCommands = "increment" | "decrement" | "push" | "clear" | "delete" | "negative";
+
+interface InputNumberProps extends Omit<React.HTMLProps<HTMLDivElement>, "onChange" | "value"> {
     onChange?(value: string): void;
-    onEnter?(e: React.KeyboardEvent<HTMLDivElement>): void;
-    value?: string | number;
+
+    onKeyDown?(event: React.KeyboardEvent<HTMLDivElement>): void;
+    onEnter?(event: React.KeyboardEvent<HTMLDivElement>): void;
+
+    value?: string | number | bigint;
     decimal?: number;
     currency?: string; // e.g. "€" / "£" / "¥" / "₩"
     disabled?: boolean;
     readonly?: boolean;
 }
 
-Input.Number = (props: InputNumberProps) => {
+export interface InputNumberRef {
+    command(command: InputNumberCommands, payload?: unknown);
+    getValue(): bigint;
+}
+
+Input.Number = React.forwardRef((props: InputNumberProps, ref: React.Ref<InputNumberRef>) => {
     const {
         className: _className, value: _value, decimal: _decimal, currency: _currency,
         onChange, onKeyDown, onEnter,
         disabled, readOnly, ...rest
     } = props;
-    const className = ["input", "input-number", _className].filter(Boolean).join(" ");
 
+    const className = React.useMemo(() => ["input", "input-number", _className].filter(Boolean).join(" "), [_className]);
     const inputEl = React.useRef<HTMLDivElement>(null);
 
-    const [value, setValue] = React.useState<BigFloat>(new BigFloat(_value, _decimal));
-    const [displayValue, setDisplayValue] = React.useState<string>(value.toString());
+    const [value, setValue] = React.useState<bigint>(0n);
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const formattedValue = React.useMemo((): string => {
+        const _value = (value < 0 ? -value : value).toString();
+        const _sign = value < 0 ? "-" : "";
+
+        if (_value.length > _decimal) {
+            const separation = _value.length - _decimal;
+            return `${_sign}${_value.slice(0, separation)}.${_value.slice(separation)}`;
+
+        } else {
+            return `${_sign}0.${"0".repeat(_decimal - _value.length)}${_value}`;
+        }
+
+    }, [_decimal, value]);
+
+    const command = React.useCallback<InputNumberRef["command"]>((command: InputNumberCommands, payload?: unknown) => {
+        switch (command) {
+            case "increment":
+                setValue(value => value + 1n);
+                break;
+            case "decrement":
+                setValue(value => value - 1n);
+                break;
+            case "push":
+                setValue(value => value * 10n + BigInt(payload as string));
+                break;
+            case "clear":
+                setValue(0n);
+                break;
+            case "delete":
+                setValue(value => value / 10n);
+                break;
+            case "negative":
+                setValue(value => -value);
+                break;
+        }
+    }, []);
+
+    const handleKeyDown = React.useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
         onKeyDown && onKeyDown(e);
         const interrupt = () => {
             e.preventDefault();
@@ -388,79 +350,87 @@ Input.Number = (props: InputNumberProps) => {
 
         if (e.key.match(/^[0-9]$/)) {
             interrupt();
-            setDisplayValue(value.append(e.key as "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9").toString());
+            command("push", e.key);
         }
         switch (e.key) {
             case "Delete":
                 interrupt();
-                setDisplayValue(value.clean().toString());
+                command("clear");
                 break;
             case "Backspace":
                 interrupt();
-                setDisplayValue(value.removeLast().toString());
+                command("delete");
                 break;
             case "ArrowUp":
                 interrupt();
-                setDisplayValue(value.increase().toString());
+                command("increment");
                 break;
             case "ArrowDown":
                 interrupt();
-                setDisplayValue(value.decrease().toString());
+                command("decrement");
                 break;
             case " ":
                 interrupt();
-                setDisplayValue(value.append("0").append("0").toString());
                 break;
             case "-":
                 interrupt();
-                setDisplayValue(value.negate().toString());
+                command("negative");
                 break;
         }
-    };
+    }, [command, disabled, readOnly, onEnter, onKeyDown]);
 
-    const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    const handleWheel = React.useCallback((e: React.WheelEvent<HTMLDivElement>) => {
         if (readOnly || disabled) {
             return;
         }
 
         if (e.deltaY > 0) {
-            setDisplayValue(value.decrease().toString());
+            command("increment");
 
         } else {
-            setDisplayValue(value.increase().toString());
+            command("decrement");
+
         }
-    };
+    }, [readOnly, disabled]);
+
+    React.useImperativeHandle(ref, () => ({
+        command,
+        getValue: () => value,
+    }));
 
     React.useEffect(() => {
-        onChange && onChange(displayValue);
+        onChange && onChange(formattedValue);
 
-    }, [displayValue]);
-
-    React.useEffect(() => {
-        setDisplayValue(value.toString());
-
-    }, [value]);
+    }, [formattedValue]);
 
     React.useEffect(() => {
-        const __value = new BigFloat(_value, _decimal);
-        if (!value.isEqual(__value)) {
-            setValue(__value);
+        if (typeof _value === "string") {
+            setValue(BigInt(_value.replace(/[^0-9]/g, "")));
+
+        } else {
+            setValue(BigInt(_value));
         }
 
     }, [_value]);
 
     React.useEffect(() => {
-        inputEl.current.addEventListener("wheel", e => e.preventDefault());
+        const wheelHandler = e => e.preventDefault();
+
+        inputEl.current.addEventListener("wheel", wheelHandler);
+
+        return () => {
+            inputEl.current.removeEventListener("wheel", wheelHandler);
+        }
 
     }, []);
 
     return (
         <div ref={inputEl} role="textbox" tabIndex={0} className={className} aria-disabled={disabled} aria-readonly={readOnly} {...rest} onKeyDown={handleKeyDown} onWheel={handleWheel}>
             <span className="currency">{_currency}</span>
-            {displayValue}
+            {formattedValue}
         </div>
     );
-};
+});
 Input.Number.displayName = "Input.Number";
 Input.Number.defaultProps = {
     value: 0,

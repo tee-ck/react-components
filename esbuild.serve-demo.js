@@ -19,6 +19,9 @@ chokidar.watch(["./src", "./demo-src"], {ignored:/build|node_modules|\.idea|\.gi
         case "change": {
             await generateDemo();
 
+            const {watcher} = LiveServer;
+            watcher.emit(event, path);
+
             break;
         }
     }
