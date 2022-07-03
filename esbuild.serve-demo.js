@@ -14,7 +14,7 @@ LiveServer.start({
     logLevel: 2,
 });
 
-chokidar.watch(["./src", "./static"], {ignored:/build|node_modules|\.idea|\.git/}).on("all", async () => {
+chokidar.watch(["./src", "./demo-src"], {ignored:/build|node_modules|\.idea|\.git/}).on("all", async () => {
     await buildDemo();
 
     const {watcher} = LiveServer;

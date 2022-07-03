@@ -4,11 +4,11 @@ import fs from "fs-extra";
 
 export const buildDemo = async () => {
     await fs.rm("./demo", {recursive: true, force: true});
-    await fs.copy("./static/index.html", "./demo/index.html", {overwrite: true});
+    await fs.copy("./demo-src/index.html", "./demo/index.html", {overwrite: true});
 
     return await esbuild.build({
         entryPoints: [
-            "./static/index.tsx",
+            "./demo-src/index.tsx",
         ],
         target: "es2022",
         loader: {
@@ -19,7 +19,7 @@ export const buildDemo = async () => {
         legalComments: "none",
         bundle: true,
         sourcemap: false,
-        // outfile: "./static/index.js",
+        // outfile: "./demo-src/index.js",
         outdir: "./demo",
         platform: "browser",
         plugins: [
