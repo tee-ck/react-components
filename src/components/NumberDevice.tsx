@@ -15,10 +15,10 @@ interface NumberDeviceProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "
 const NumberDevice: React.FC<NumberDeviceProps> = React.memo((props: NumberDeviceProps) => {
     const {className: _className, onChange, size, value: _value, decimal: _decimal, currency, ...rest} = props;
 
-    const className = React.useMemo(() => ["number-device", _className].filter(Boolean).join(" "), [_className]);
+    const className = ["number-device", _className].filter(Boolean).join(" ");
     const inputEl = React.useRef<InputNumberRef>(null);
 
-    const handleKeyClick = React.useCallback((key: string) => {
+    const handleKeyClick = (key: string) => {
         switch (key) {
             case "0":
             case "1":
@@ -40,12 +40,11 @@ const NumberDevice: React.FC<NumberDeviceProps> = React.memo((props: NumberDevic
                 inputEl.current?.command("clear");
                 break;
         }
-    }, []) as (key: string) => void;
+    };
 
-    const handleChange = React.useCallback((value: string) => {
+    const handleChange = (value: string) => {
         onChange && onChange(value);
-
-    }, []) as (value: string) => void;
+    };
 
     return (
         <div className={className} data-size={size} {...rest}>

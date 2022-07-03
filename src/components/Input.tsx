@@ -3,6 +3,7 @@ import {CgClose} from "react-icons/cg";
 import {MdCheck} from "react-icons/md";
 
 import "./Input.scss";
+import equal from "fast-deep-equal/es6/react";
 
 interface InputComponent extends React.FC<InputProps> {
     Textarea: React.FC<InputTextareaProps>;
@@ -281,14 +282,14 @@ export interface InputNumberRef {
     getValue(): bigint;
 }
 
-Input.Number = React.forwardRef((props: InputNumberProps, ref: React.Ref<InputNumberRef>) => {
+Input.Number = React.memo(React.forwardRef((props: InputNumberProps, ref: React.Ref<InputNumberRef>) => {
     const {
         className: _className, value: _value, decimal: _decimal, currency: _currency,
         onChange, onKeyDown, onEnter,
         disabled, readOnly, ...rest
     } = props;
 
-    const className = React.useMemo(() => ["input", "input-number", _className].filter(Boolean).join(" "), [_className]);
+    const className = ["input", "input-number", _className].filter(Boolean).join(" ");
     const inputEl = React.useRef<HTMLDivElement>(null);
 
     const [value, setValue] = React.useState<bigint>(0n);
@@ -307,7 +308,7 @@ Input.Number = React.forwardRef((props: InputNumberProps, ref: React.Ref<InputNu
 
     }, [_decimal, value]);
 
-    const command = React.useCallback<InputNumberRef["command"]>((command: InputNumberCommands, payload?: unknown) => {
+    const command = (command: InputNumberCommands, payload?: unknown) => {
         switch (command) {
             case "increment":
                 setValue(value => value + 1n);
@@ -328,7 +329,7 @@ Input.Number = React.forwardRef((props: InputNumberProps, ref: React.Ref<InputNu
                 setValue(value => -value);
                 break;
         }
-    }, []);
+    };
 
     const handleKeyDown = React.useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
         onKeyDown && onKeyDown(e);
@@ -377,7 +378,7 @@ Input.Number = React.forwardRef((props: InputNumberProps, ref: React.Ref<InputNu
                 command("negative");
                 break;
         }
-    }, [command, disabled, readOnly, onEnter, onKeyDown]);
+    }, [command, disabled, readOnly, onEnter, onKeyDown]) as React.KeyboardEventHandler<HTMLDivElement>;
 
     const handleWheel = React.useCallback((e: React.WheelEvent<HTMLDivElement>) => {
         if (readOnly || disabled) {
@@ -391,12 +392,12 @@ Input.Number = React.forwardRef((props: InputNumberProps, ref: React.Ref<InputNu
             command("decrement");
 
         }
-    }, [readOnly, disabled]);
+    }, [readOnly, disabled]) as React.EventHandler<React.WheelEvent<HTMLDivElement>>;
 
     React.useImperativeHandle(ref, () => ({
         command,
         getValue: () => value,
-    }));
+    }), []);
 
     React.useEffect(() => {
         onChange && onChange(formattedValue);
@@ -424,13 +425,15 @@ Input.Number = React.forwardRef((props: InputNumberProps, ref: React.Ref<InputNu
 
     }, []);
 
+    console.log(`render Input.Number`);
+
     return (
         <div ref={inputEl} role="textbox" tabIndex={0} className={className} aria-disabled={disabled} aria-readonly={readOnly} {...rest} onKeyDown={handleKeyDown} onWheel={handleWheel}>
             <span className="currency">{_currency}</span>
             {formattedValue}
         </div>
     );
-});
+}), (prevProps, nextProps) => equal(prevProps, nextProps));
 Input.Number.displayName = "Input.Number";
 Input.Number.defaultProps = {
     value: 0,
