@@ -16,6 +16,8 @@ interface InputComponent extends React.FC<InputProps> {
 interface InputProps extends React.HTMLProps<HTMLInputElement> {
     onValueChange?(value: string): void;
 
+    onChange?(event: React.ChangeEvent<HTMLInputElement>): void;
+
     onKeyDown?(event: React.KeyboardEvent<HTMLInputElement>): void;
 
     onEnter?(event: React.KeyboardEvent<HTMLInputElement>): void;
@@ -43,8 +45,8 @@ const Input: InputComponent = (props: InputProps) => {
     };
 
     return (
-        <input className={className} aria-disabled={disabled} aria-readonly={readOnly} disabled={disabled} readOnly={readOnly} value={value} {...rest} onKeyDown={handleKeyDown}
-               onChange={handleChange}/>
+        <input className={className} aria-disabled={disabled} aria-readonly={readOnly} disabled={disabled} readOnly={readOnly} value={value} {...rest}
+               onKeyDown={handleKeyDown} onChange={handleChange}/>
     );
 };
 
@@ -268,6 +270,7 @@ interface InputNumberProps extends Omit<React.HTMLProps<HTMLDivElement>, "onChan
     onChange?(value: string): void;
 
     onKeyDown?(event: React.KeyboardEvent<HTMLDivElement>): void;
+
     onEnter?(event: React.KeyboardEvent<HTMLDivElement>): void;
 
     value?: string | number | bigint;
@@ -279,6 +282,7 @@ interface InputNumberProps extends Omit<React.HTMLProps<HTMLDivElement>, "onChan
 
 export interface InputNumberRef {
     command(command: InputNumberCommands, payload?: unknown);
+
     getValue(): bigint;
 }
 
