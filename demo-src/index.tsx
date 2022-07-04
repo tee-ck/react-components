@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import {Button, ButtonVariant, Input, Loading, Modal, Card, Drawer, Pagination, Dropdown, Divider, NumberDevice} from "../src";
+import {Button, ButtonVariant, Input, Loading, Modal, Card, Drawer, Pagination, Dropdown, Divider, NumberDevice, RTEditor} from "../src";
 
 import "./index.scss";
 import Slider from "../src/components/Slider";
@@ -169,11 +169,26 @@ function Demo() {
     );
 }
 
+const EditorPage = () => {
+
+    const handleChange = (content: string) => {
+
+
+    };
+
+    return (
+        <div style={{padding: 5}}>
+            <RTEditor onChange={handleChange}/>
+        </div>
+    )
+};
+
 root.render(
     <React.StrictMode>
         <BrowserRouter>
             <Routes>
-                <Route path="/demo" element={<Demo/>}/>
+                <Route path="/editor" element={<EditorPage/>}/>
+                <Route path="*" element={<Demo/>}/>
             </Routes>
         </BrowserRouter>
     </React.StrictMode>

@@ -11,3 +11,4 @@ export { default as Pagination } from "./components/Pagination";
 export { default as Dropdown } from "./components/Dropdown";
 export { default as Divider } from "./components/Divider";
 export { default as NumberDevice } from "./components/NumberDevice";
+export { default as RTEditor } from "./components/RTEditor";
