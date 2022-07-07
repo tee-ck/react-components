@@ -12,7 +12,11 @@ interface NumberDeviceProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "
     currency?: string;
 }
 
-const NumberDevice: React.FC<NumberDeviceProps> = React.memo((props: NumberDeviceProps) => {
+interface NumberDeviceComponent extends React.FC<NumberDeviceProps> {
+
+}
+
+const NumberDevice: NumberDeviceComponent = React.memo((props: NumberDeviceProps) => {
     const {className: _className, onChange, size, value: _value, decimal: _decimal, currency, ...rest} = props;
 
     const className = ["number-device", _className].filter(Boolean).join(" ");

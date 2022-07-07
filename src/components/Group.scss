@@ -1,0 +1,10 @@
+.group {
+  display: flex;
+  flex-direction: row;
+  border-radius: .25rem;
+  overflow: hidden;
+
+  > * {
+    border-radius: 0 !important;
+  }
+}

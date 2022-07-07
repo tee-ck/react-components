@@ -48,15 +48,3 @@ div[role=button].button {
         border: 1px solid $gray-6;
     }
 }
-
-div.button-group {
-    display: flex;
-    flex-direction: row;
-    overflow: hidden;
-    border-radius: .25rem;
-
-    .button {
-        flex: auto;
-        border-radius: 0;
-    }
-}

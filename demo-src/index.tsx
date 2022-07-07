@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import {Button, ButtonVariant, Input, Loading, Modal, Card, Drawer, Pagination, Dropdown, Divider, NumberDevice, RTEditor} from "../src";
+import {Button, ButtonVariant, Input, Loading, Modal, Card, Drawer, Pagination, Dropdown, Divider, NumberDevice, RTEditor, Group, CountDown} from "../src";
 
 import "./index.scss";
 import Slider from "../src/components/Slider";
@@ -9,6 +9,8 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 const root: ReactDOM.Root = ReactDOM.createRoot(
     document.getElementById("root") as HTMLElement
 );
+
+const target = new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)
 
 function Demo() {
     const [screenLoading, setScreenLoading] = React.useState<boolean>(false);
@@ -109,6 +111,17 @@ function Demo() {
             </Card>
 
             <Card style={{marginTop: 10}}>
+                <Card.Header>Dev Components</Card.Header>
+                <Card.Body>
+                    <CountDown destination={"2022-7-11 8:00"}>
+                        {([days, hours, minutes, seconds]) => {
+                            return [days * 24 + hours, minutes, seconds].map(n => n < 10 ? `0${n}` : n).join(":");
+                        }}
+                    </CountDown>
+                </Card.Body>
+            </Card>
+
+            <Card style={{marginTop: 10}}>
                 <Card.Header>Button Components</Card.Header>
                 <Card.Body>
                     <div>
@@ -121,12 +134,12 @@ function Demo() {
                         <Button outlined={buttonOutlined} key={variant} variant={variant} style={{margin: 5}}>{variant}</Button>
                     ))}
 
-                    <Button.Group style={{margin: 5, flexWrap: "wrap"}}>
+                    <Group style={{margin: 5, flexWrap: "wrap"}}>
                         <Button outlined={buttonOutlined} className={"xs-12 sm-6 md-3"} variant="primary">Primary</Button>
                         <Button outlined={buttonOutlined} className={"xs-12 sm-6 md-3"} variant="secondary">Secondary</Button>
                         <Button outlined={buttonOutlined} className={"xs-12 sm-6 md-3"} variant="success">Success</Button>
                         <Button outlined={buttonOutlined} className={"xs-12 sm-6 md-3"} variant="danger">Danger</Button>
-                    </Button.Group>
+                    </Group>
                 </Card.Body>
             </Card>
 
