@@ -13,4 +13,5 @@ export { default as Divider } from "./components/Divider";
 export { default as Group } from "./components/Group";
 export { default as NumberDevice } from "./components/NumberDevice";
 export { default as CountDown } from "./components/CountDown";
+export { default as DatePicker } from "./components/DatePicker";
 export { default as RTEditor } from "./components/RTEditor";
